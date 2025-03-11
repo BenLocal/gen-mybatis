@@ -15,6 +15,7 @@
     </properties>
 
     <modules>
+        <module>gen-mybatis-maven-plugin</module>
         <module>gen-mybatis</module>
         <module>gen-mybatis-example</module>
     </modules>

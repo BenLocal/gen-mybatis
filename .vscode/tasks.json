@@ -1,14 +1,20 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "mvnDebug",
-            "type": "shell",
-            "command": "mvnDebug clean install",
-            "group": "build",
-            "isBackground": true,
-        },
-    ]
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "mvnDebug",
+      "type": "shell",
+      "command": "mvnDebug clean install",
+      "group": "build",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "close": false
+      },
+      "problemMatcher": []
+    }
+  ]
 }

@@ -32,6 +32,51 @@
             <version>3.5.19</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.36</version>
+            <scope>provided</scope>
+        </dependency>
+
+
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.benshi</groupId>
+                <artifactId>gen-mybatis-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <configuration>
+                    <config>
+                        <url>jdbc:mysql://172.31.169.114:3306/test</url>
+                        <username>root</username>
+                        <password>root</password>
+                        <packageName>com.github.benshi.example.model</packageName>
+                        <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+                        <includeTables>
+                            <includeTable>user</includeTable>
+                        </includeTables>
+                        <excludeTables>
+                            <excludeTable>flyway_schema_history</excludeTable>
+                        </excludeTables>
+                        <generateLombok>true</generateLombok>
+                        <!-- <generateJPA>true</generateJPA> -->
+                        <!-- <generateSwagger>true</generateSwagger> -->
+                    </config>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-mybatis-entities</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
