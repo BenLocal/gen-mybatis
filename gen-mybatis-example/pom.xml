@@ -80,10 +80,10 @@
                     <source>8</source>
                     <target>8</target>
                     <fork>true</fork>
-                    <compilerArgs>
+                    <!-- <compilerArgs>
                         <arg>-J-Dautogen.mapper.output.dir=${project.basedir}/src/main/java</arg>
                         <arg>-J-Dautogen.mapper.xml.output.dir=${project.basedir}/src/main/resources/mapper</arg>
-                    </compilerArgs>
+                    </compilerArgs> -->
                 </configuration>
             </plugin>
             <plugin>
@@ -92,7 +92,7 @@
                 <version>1.0-SNAPSHOT</version>
                 <configuration>
                     <config>
-                        <url>jdbc:mysql://172.31.169.114:3306/test</url>
+                        <url>jdbc:mysql://localhost:3306/test</url>
                         <username>root</username>
                         <password>root</password>
                         <packageName>com.github.benshi.example.model</packageName>
@@ -108,6 +108,13 @@
                         <!-- <generateSwagger>true</generateSwagger> -->
                     </config>
                 </configuration>
+                <executions>
+                <execution>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                </execution>
+            </executions>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

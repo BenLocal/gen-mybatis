@@ -169,7 +169,7 @@ public class AutoGenMapperProcessor extends AbstractProcessor {
         TypeSpec.Builder interfaceBuilder = TypeSpec.interfaceBuilder(mapperSimpleClassName)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(ClassName.get("org.apache.ibatis.annotations", "Mapper"))
-                .addJavadoc("MyBatis Mapper for $L\n", mapperSimpleClassName)
+                .addJavadoc("MyBatis Mapper for $L\n", info.getSimpleClassName())
                 .addJavadoc("Generated automatically by AutoGenMapperProcessor\n");
 
         TypeName entityType = ClassName.get(info.getPackageName(), info.getSimpleClassName());

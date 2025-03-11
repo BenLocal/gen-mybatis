@@ -12,13 +12,13 @@ import com.github.benshi.AutoGenColumn;
 @AutoGenMapper(table = "user")
 public class User {
 
-    @AutoGenColumn(name = "id", type = "BIGINT" , nullable = false , pk = true)
+    @AutoGenColumn(name = "id", type = "BIGINT" , nullable = false, pk = true)
     private Long id;
 
-    @AutoGenColumn(name = "name", type = "VARCHAR" , nullable = false )
+    @AutoGenColumn(name = "name", type = "VARCHAR" , nullable = false)
     private String name;
 
-    @AutoGenColumn(name = "age", type = "INT"  )
+    @AutoGenColumn(name = "age", type = "INT" , nullable = false)
     private Integer age;
 
 }
