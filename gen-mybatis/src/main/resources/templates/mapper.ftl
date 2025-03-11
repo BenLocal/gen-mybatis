@@ -59,7 +59,7 @@
         </#list>
     </select>
 
-    <delete id="deleteById" resultType="int">
+    <delete id="deleteById">
         delete from `${table}`
         <#list baseResultMap as ci>
         <#if ci.pk>
@@ -68,7 +68,7 @@
         </#list>
     </delete>
 
-    <update id="update" parameterType="${entityNamespace}" resultType="int">
+    <update id="update" parameterType="${entityNamespace}">
         update `${table}`
         <set>
             <#list baseResultMap as ci>
@@ -86,7 +86,7 @@
         </#list>
     </update>
 
-    <insert id="insert" parameterType="${entityNamespace}" resultType="int">
+    <insert id="insert" parameterType="${entityNamespace}">
         insert into `${table}`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <#list baseResultMap as ci>
@@ -109,15 +109,15 @@
         from `${table}`
         <where>
             <#list baseResultMap as ci>
-            <#if ci.pk>
-            AND `${ci.column}` = ${r'#{'}${ci.property}, jdbcType=${ci.jdbcType?upper_case}}
-            </#if>
+            <if test="${ci.property} != null">
+                AND `${ci.column}` = ${r'#{'}${ci.property}, jdbcType=${ci.jdbcType?upper_case}}
+            </if>
             </#list>
         </where>
         limit 1
     </select>
 
-    <insert id="batchInsert" parameterType="${entityNamespace}" resultType="int">
+    <insert id="batchInsert" parameterType="${entityNamespace}">
         insert into `${table}`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <#list baseResultMap as ci>
@@ -131,7 +131,7 @@
         </foreach>
     </insert>
 
-    <update id="batchUpdate" parameterType="${entityNamespace}" resultType="int">
+    <update id="batchUpdate" parameterType="${entityNamespace}">
         insert into `${table}`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <#list baseResultMap as ci>

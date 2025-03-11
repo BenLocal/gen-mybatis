@@ -24,6 +24,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
+import javax.tools.JavaFileManager;
 import javax.tools.StandardLocation;
 
 import com.squareup.javapoet.AnnotationSpec;
@@ -349,14 +350,60 @@ public class AutoGenMapperProcessor extends AbstractProcessor {
         properties.put("agile", agileSB.length() == 0 ? "" : agileSB.substring(1));
         properties.put("table", info.tableName());
 
-        String relativePath = "mappers/" + mapperSimpleClassName + ".xml";
+        String relativePath = "mapper/" + mapperSimpleClassName + ".xml";
         Template template = freemarkerConfig.getTemplate("mapper.ftl");
+
+        JavaFileManager.Location location = StandardLocation.SOURCE_OUTPUT;
+        checkAndDeleteExistingFile(filer, location, "", relativePath);
         FileObject fileObject = filer.createResource(
-                StandardLocation.CLASS_OUTPUT,
+                location,
                 "",
                 relativePath);
+
         try (Writer writer = fileObject.openWriter()) {
             template.process(properties, writer);
+        }
+    }
+
+    /**
+     * 检查并删除已存在的文件
+     * 
+     * @param filer       注解处理器的Filer
+     * @param packageName 包名
+     * @param fileName    文件名
+     * @return 如果文件存在并被删除返回true，否则返回false
+     */
+    private boolean checkAndDeleteExistingFile(Filer filer, JavaFileManager.Location location, String packageName,
+            String fileName) {
+        try {
+            // 尝试获取文件对象，如果文件不存在会抛出异常
+            FileObject existingFile = filer.getResource(
+                    location,
+                    packageName,
+                    fileName);
+
+            // 如果能执行到这里，说明文件存在
+            // 注意：Filer API没有直接的删除方法，我们需要使用Java IO API
+            // 获取文件的URI并转换为File对象
+            java.io.File file = new java.io.File(existingFile.toUri());
+
+            // 删除文件
+            boolean deleted = file.delete();
+
+            if (deleted) {
+                processingEnv.getMessager().printMessage(
+                        javax.tools.Diagnostic.Kind.NOTE,
+                        "Deleted existing file: " + packageName + "." + fileName);
+            } else {
+                processingEnv.getMessager().printMessage(
+                        javax.tools.Diagnostic.Kind.WARNING,
+                        "Failed to delete existing file: " + packageName + "." + fileName);
+            }
+
+            return deleted;
+        } catch (IOException e) {
+            // 文件不存在，这是正常的情况
+            return false;
         }
     }
 }
