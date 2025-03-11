@@ -2,15 +2,18 @@ package com.github.benshi;
 
 @AutoGenMapper
 public class User {
-    private int id;
+    @AutoGenColumn(name = "uid", pk = true, type = "bigint")
+    private long id;
+    @AutoGenColumn(name = "name", type = "VARCHAR(255)")
     private String name;
+    @AutoGenColumn(name = "age", type = "int")
     private int age;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

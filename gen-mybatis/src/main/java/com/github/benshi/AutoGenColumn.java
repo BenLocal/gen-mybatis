@@ -5,8 +5,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.SOURCE)
-public @interface GenColumn {
+public @interface AutoGenColumn {
+    String name();
 
+    boolean nullable() default true;
+
+    boolean pk() default false;
+
+    String comment() default "";
+
+    String type() default "";
 }
