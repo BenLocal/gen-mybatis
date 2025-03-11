@@ -12,11 +12,13 @@ import javax.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.experimental.Accessors;
 </#if>
 <#if generateSwagger>
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 </#if>
+import java.util.Optional;
 import com.github.benshi.AutoGenMapper;
 import com.github.benshi.AutoGenColumn;
 
@@ -29,6 +31,7 @@ import com.github.benshi.AutoGenColumn;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 </#if>
 <#if generateJPA>
 @Entity
@@ -43,7 +46,9 @@ public class ${className} {
 <#list columns as column>
     <#if column.columnComment?has_content>
     /**
-     * ${column.columnComment}
+<#list column.columnComment?split("\n") as line>
+     * ${line?trim}
+</#list>
      */
     </#if>
     <#if generateJPA>
@@ -90,4 +95,10 @@ public class ${className} {
 
 </#list>
 </#if>
+<#list columns as column>
+    public Optional<${column.javaTypeSimple}> get${column.fieldName?cap_first}Optional() {
+        return Optional.ofNullable(${column.fieldName});
+    }
+    
+</#list>
 }
