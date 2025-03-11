@@ -1,7 +1,12 @@
 package com.github.benshi;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -22,6 +27,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
+import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
 import javax.tools.JavaFileManager;
@@ -48,6 +54,8 @@ public class AutoGenMapperProcessor extends AbstractProcessor {
     private Messager messager;
     private Filer filer;
     private Configuration freemarkerConfig;
+    private String mapperOutputDir;
+    private String mapperXmlOutputDir;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -56,6 +64,9 @@ public class AutoGenMapperProcessor extends AbstractProcessor {
         messager = processingEnv.getMessager();
         filer = processingEnv.getFiler();
         freemarkerConfig = initFreeMarker();
+
+        mapperOutputDir = System.getProperty("autogen.mapper.output.dir");
+        mapperXmlOutputDir = System.getProperty("autogen.mapper.xml.output.dir");
     }
 
     @Override
@@ -318,7 +329,15 @@ public class AutoGenMapperProcessor extends AbstractProcessor {
                 .indent("    ")
                 .build();
 
-        javaFile.writeTo(filer);
+        if (mapperOutputDir != null) {
+            // write to source directory
+            try (FileWriter writer = new FileWriter(
+                    toSourceFile(mapperOutputDir, mapperPackageName, mapperSimpleClassName + ".java"))) {
+                writer.write(javaFile.toString());
+            }
+        } else {
+            javaFile.writeTo(filer);
+        }
     }
 
     private void generateMapperXmlFile(GenElementInfo info) throws IOException, TemplateException {
@@ -360,8 +379,18 @@ public class AutoGenMapperProcessor extends AbstractProcessor {
                 "",
                 relativePath);
 
-        try (Writer writer = fileObject.openWriter()) {
-            template.process(properties, writer);
+        if (mapperXmlOutputDir != null) {
+            // write to source directory
+            try (FileWriter writer = new FileWriter(
+                    toSourceFile(
+                            mapperXmlOutputDir, "",
+                            mapperSimpleClassName + ".xml"))) {
+                template.process(properties, writer);
+            }
+        } else {
+            try (Writer writer = fileObject.openWriter()) {
+                template.process(properties, writer);
+            }
         }
     }
 
@@ -405,5 +434,84 @@ public class AutoGenMapperProcessor extends AbstractProcessor {
             // 文件不存在，这是正常的情况
             return false;
         }
+    }
+
+    // private String findSourcePath(Element element) {
+    // try {
+    // // 获取被注解元素的源文件位置
+    // FileObject fileObject = processingEnv.getFiler().getResource(
+    // StandardLocation.SOURCE_PATH,
+    // "",
+    // getElementPath(element));
+
+    // // 获取源文件的URI
+    // URI uri = fileObject.toUri();
+    // File file = new File(uri);
+
+    // // 获取包含该文件的源目录
+    // String filePath = file.getParentFile().getAbsolutePath();
+    // String packagePath = getElementPackagePath(element);
+
+    // // 移除包路径部分，得到源目录
+    // String sourcePath = filePath.substring(0, filePath.length() -
+    // packagePath.length());
+
+    // return sourcePath;
+    // } catch (IOException e) {
+    // processingEnv.getMessager().printMessage(
+    // Diagnostic.Kind.WARNING,
+    // "Could not determine source path: " + e.getMessage(),
+    // element);
+    // return null;
+    // }
+    // }
+
+    // private String getElementPath(Element element) {
+    // // 获取元素的完全限定名
+    // String className = getElementClassName(element);
+    // return className.replace('.', File.separatorChar) + ".java";
+    // }
+
+    // private String getElementClassName(Element element) {
+    // if (element instanceof TypeElement) {
+    // return ((TypeElement) element).getQualifiedName().toString();
+    // }
+    // return getElementClassName(element.getEnclosingElement()) + "$" +
+    // element.getSimpleName();
+    // }
+
+    // private String getElementPackagePath(Element element) {
+    // String packageName =
+    // processingEnv.getElementUtils().getPackageOf(element).getQualifiedName().toString();
+    // return packageName.replace('.', File.separatorChar) + File.separator;
+    // }
+
+    private File toSourceFile(String projectPath, String packageName, String fileName) {
+        // 构建源文件路径
+        String packagePath = packageName.replace('.', File.separatorChar);
+        String srcPath = projectPath + File.separator + packagePath;
+
+        // 确保目录存在
+        File dir = new File(srcPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        Path path = Paths.get(dir.getAbsolutePath(), fileName);
+        if (Files.exists(path)) {
+            try {
+                Files.delete(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        File file = new File(path.toString());
+
+        processingEnv.getMessager().printMessage(
+                Diagnostic.Kind.NOTE,
+                "Generated file: " + file.getAbsolutePath());
+
+        return file;
     }
 }

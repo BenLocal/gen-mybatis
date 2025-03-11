@@ -60,4 +60,8 @@ public class GenElementInfo {
         return columns.stream().filter(GenElementColumnInfo::isPrimaryKey)
                 .collect(Collectors.toList());
     }
+
+    public TypeElement getElement() {
+        return element;
+    }
 }
