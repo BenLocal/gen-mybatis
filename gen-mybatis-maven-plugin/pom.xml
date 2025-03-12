@@ -20,7 +20,6 @@
         <maven.plugin.api.version>3.8.5</maven.plugin.api.version>
         <maven.plugin.annotations.version>3.6.4</maven.plugin.annotations.version>
         <maven.project.version>2.2.1</maven.project.version>
-        <freemarker.version>2.3.31</freemarker.version>
     </properties>
 
     <dependencies>
@@ -52,14 +51,12 @@
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
-            <version>${freemarker.version}</version>
         </dependency>
         
         <!-- JDBC Drivers - Include the ones you need -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.28</version>
         </dependency>
         
         <!-- Add more database drivers as needed -->

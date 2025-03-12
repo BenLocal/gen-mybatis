@@ -119,6 +119,14 @@ public interface UserMapper {
 - 查询、插入、更新、删除操作
 - 批量操作
 
+## 编译
+
+- 全部编译, `gen-mybatis-example`工程为示例工程，需要依赖 mysql 服务才可以编译成功
+
+```shell
+mvn clean package install -pl '!gen-mybatis-example'
+```
+
 ## 许可证
 
 MIT License

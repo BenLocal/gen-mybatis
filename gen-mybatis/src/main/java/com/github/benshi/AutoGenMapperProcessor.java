@@ -96,9 +96,9 @@ public class AutoGenMapperProcessor extends AbstractProcessor {
                         processingEnv.getMessager().printMessage(Kind.NOTE,
                                 "generate mapper interface success");
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        messager.printMessage(Kind.ERROR, "IOException occurred: " + e.getMessage());
                     } catch (TemplateException e) {
-                        e.printStackTrace();
+                        messager.printMessage(Kind.ERROR, "TemplateException occurred: " + e.getMessage());
                     }
 
                 }
@@ -381,6 +381,7 @@ public class AutoGenMapperProcessor extends AbstractProcessor {
                 relativePath);
 
         if (mapperXmlOutputDir != null) {
+
             // write to source directory
             try (FileWriter writer = new FileWriter(
                     toSourceFile(
@@ -431,7 +432,7 @@ public class AutoGenMapperProcessor extends AbstractProcessor {
             }
 
             return deleted;
-        } catch (IOException e) {
+        } catch (Exception e) {
             // 文件不存在，这是正常的情况
             return false;
         }
@@ -503,7 +504,7 @@ public class AutoGenMapperProcessor extends AbstractProcessor {
             try {
                 Files.delete(path);
             } catch (IOException e) {
-                e.printStackTrace();
+                // ignore
             }
         }
 
