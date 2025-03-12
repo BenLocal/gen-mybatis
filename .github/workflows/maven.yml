@@ -42,6 +42,7 @@ jobs:
             sleep 1
           done
           echo "MySQL is ready!"
+          sleep 20
 
       - name: Initialize database
         run: |
