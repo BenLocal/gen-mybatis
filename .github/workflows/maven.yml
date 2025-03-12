@@ -48,7 +48,7 @@ jobs:
           # Copy the SQL file to the container
           docker cp gen-mybatis-example/src/main/resources/table.sql gen_mysql:/tmp/db.sql
           # Execute the SQL file
-          docker exec gen_mysql mysql -u root -proot -e "SOURCE /tmp/db.sql;"
+          docker exec gen_mysql mysql -u root -p'root' -e "SOURCE /tmp/db.sql;"
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
