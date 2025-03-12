@@ -9,6 +9,10 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <name>Gen MyBatis</name>
+    <description>A tool for generating MyBatis code</description>
+    <url>https://github.com/BenLocal/gen-mybatis</url>
+
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
