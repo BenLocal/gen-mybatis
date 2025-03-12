@@ -18,13 +18,16 @@ import lombok.experimental.Accessors;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 </#if>
+<#if generateOptional>
 import java.util.Optional;
+</#if>
 import com.github.benshi.AutoGenMapper;
 import com.github.benshi.AutoGenColumn;
 
 <#if tableComment?has_content>
 /**
- * ${tableComment}
+ * ${className} for ${tableComment}
+ *
  */
 </#if>
 <#if generateLombok>
@@ -95,10 +98,21 @@ public class ${className} {
 
 </#list>
 </#if>
+<#if generateOptional>
 <#list columns as column>
     public Optional<${column.javaTypeSimple}> get${column.fieldName?cap_first}Optional() {
         return Optional.ofNullable(${column.fieldName});
     }
+
+    public void set${column.fieldName?cap_first}Optional(Optional<${column.javaTypeSimple}> ${column.fieldName}Optional) {
+        if (${column.fieldName}Optional == null) {
+            this.${column.fieldName} = null;
+            return;
+        }
+
+        this.${column.fieldName} = ${column.fieldName}Optional.orElse(null);
+    }
     
 </#list>
+</#if>
 }

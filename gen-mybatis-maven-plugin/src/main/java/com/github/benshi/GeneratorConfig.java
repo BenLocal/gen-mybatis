@@ -33,11 +33,14 @@ public class GeneratorConfig {
     @Parameter(defaultValue = "true")
     private boolean generateLombok;
 
-    @Parameter(defaultValue = "true")
+    @Parameter(defaultValue = "false")
     private boolean generateJPA;
 
     @Parameter(defaultValue = "false")
     private boolean generateSwagger;
+
+    @Parameter(defaultValue = "false")
+    private boolean generateOptional;
 
     public String getUrl() {
         return url;
@@ -81,5 +84,9 @@ public class GeneratorConfig {
 
     public boolean isGenerateSwagger() {
         return generateSwagger;
+    }
+
+    public boolean isGenerateOptional() {
+        return generateOptional;
     }
 }

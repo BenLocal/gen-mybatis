@@ -92,7 +92,7 @@
                 <version>1.0-SNAPSHOT</version>
                 <configuration>
                     <config>
-                        <url>jdbc:mysql://localhost:3306/test</url>
+                        <url>jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false</url>
                         <username>root</username>
                         <password>root</password>
                         <packageName>com.github.benshi.example.model</packageName>
@@ -104,6 +104,7 @@
                             <excludeTable>flyway_schema_history</excludeTable>
                         </excludeTables>
                         <generateLombok>true</generateLombok>
+                        <generateOptional>true</generateOptional>
                         <!-- <generateJPA>true</generateJPA> -->
                         <!-- <generateSwagger>true</generateSwagger> -->
                     </config>

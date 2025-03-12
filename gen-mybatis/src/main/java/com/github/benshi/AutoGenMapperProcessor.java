@@ -111,6 +111,7 @@ public class AutoGenMapperProcessor extends AbstractProcessor {
         freemarkerConfig = new Configuration(Configuration.VERSION_2_3_31);
         freemarkerConfig.setClassLoaderForTemplateLoading(getClass().getClassLoader(), "templates");
         freemarkerConfig.setDefaultEncoding("UTF-8");
+        freemarkerConfig.setOutputEncoding("UTF-8");
         freemarkerConfig.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         freemarkerConfig.setLogTemplateExceptions(false);
         freemarkerConfig.setWrapUncheckedExceptions(true);

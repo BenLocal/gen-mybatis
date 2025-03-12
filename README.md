@@ -2,7 +2,7 @@
 
 自动生成 MyBatis 映射文件和接口的工具
 
-[English Version](README_EN.MD)
+[English](./README_EN.md)
 
 ## 项目简介
 

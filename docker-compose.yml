@@ -8,6 +8,5 @@ services:
       - 3306:3306
     volumes:
       - ./mysql:/var/lib/mysql
-      - ./mysql/conf:/etc/mysql/conf.d
-    command: ["mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"] 
+    command: ["mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci", "--init-connect='SET NAMES utf8mb4'", "--skip-character-set-client-handshake"] 
     restart: always

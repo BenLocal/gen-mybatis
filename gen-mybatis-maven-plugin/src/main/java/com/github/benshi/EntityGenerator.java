@@ -1,9 +1,10 @@
 package com.github.benshi;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,21 +27,24 @@ public class EntityGenerator {
     private final boolean generateLombok;
     private final boolean generateJPA;
     private final boolean generateSwagger;
+    private final boolean generateOptional;
     private final Set<String> importedTypes = new HashSet<>();
 
     public EntityGenerator(Log log, String outputDirectory, String packageName, boolean generateLombok,
-            boolean generateJPA, boolean generateSwagger) {
+            boolean generateJPA, boolean generateSwagger, boolean generateOptional) {
         this.log = log;
         this.outputDirectory = outputDirectory;
         this.packageName = packageName;
         this.generateLombok = generateLombok;
         this.generateJPA = generateJPA;
         this.generateSwagger = generateSwagger;
+        this.generateOptional = generateOptional;
 
         // Initialize FreeMarker configuration
         freemarkerConfig = new Configuration(Configuration.VERSION_2_3_31);
         freemarkerConfig.setClassLoaderForTemplateLoading(getClass().getClassLoader(), "templates");
         freemarkerConfig.setDefaultEncoding("UTF-8");
+        freemarkerConfig.setOutputEncoding("UTF-8");
         freemarkerConfig.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         freemarkerConfig.setLogTemplateExceptions(false);
         freemarkerConfig.setWrapUncheckedExceptions(true);
@@ -75,6 +79,7 @@ public class EntityGenerator {
         dataModel.put("generateLombok", generateLombok);
         dataModel.put("generateJPA", generateJPA);
         dataModel.put("generateSwagger", generateSwagger);
+        dataModel.put("generateOptional", generateOptional);
 
         // Process columns and collect imports
         importedTypes.clear();
@@ -86,6 +91,9 @@ public class EntityGenerator {
             columnMap.put("fieldName", column.getFieldName());
             columnMap.put("javaType", column.getJavaType());
             columnMap.put("dataType", column.getDataType());
+            columnMap.put("isPrimaryKey", column.isPrimaryKey());
+            columnMap.put("isNullable", column.isNullable());
+            columnMap.put("isAutoIncrement", column.isAutoIncrement());
 
             String javaTypeSimple = TypeMapper.getSimpleJavaType(column.getJavaType());
             columnMap.put("javaTypeSimple", javaTypeSimple);
@@ -109,7 +117,8 @@ public class EntityGenerator {
 
         // Generate the entity class file
         File entityFile = new File(packageDir, table.getClassName() + ".java");
-        try (Writer writer = new FileWriter(entityFile)) {
+        try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(entityFile),
+                StandardCharsets.UTF_8)) {
             template.process(dataModel, writer);
         }
     }
