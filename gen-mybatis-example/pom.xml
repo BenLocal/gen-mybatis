@@ -92,7 +92,7 @@
                 <version>1.0-SNAPSHOT</version>
                 <configuration>
                     <config>
-                        <url>jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false</url>
+                        <url>jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;allowPublicKeyRetrieval=true</url>
                         <username>root</username>
                         <password>root</password>
                         <packageName>com.github.benshi.example.model</packageName>
