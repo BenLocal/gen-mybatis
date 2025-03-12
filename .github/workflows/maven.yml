@@ -27,14 +27,28 @@ jobs:
           distribution: "temurin"
           cache: maven
       - name: Start MySQL with Docker Compose
-        run: docker-compose up -d
+        run: docker compose up -d
       - name: Wait for MySQL to start
-        run: docker-compose exec mysql mysqladmin ping -h localhost --silent
-      - name: initialize database
         run: |
-          docker-compose cp gen-mybatis-example/src/main/resources/table.sql mysql:/tmp/db.sql
-          docker-compose exec mysql mysql -u root -e "CREATE DATABASE IF NOT EXISTS test;"
-          docker-compose exec mysql mysql -u root test < /tmp/db.sql
+          echo "Waiting for MySQL to start..."
+          # Wait up to 30 seconds for MySQL to be ready
+          timeout=30
+          while ! docker exec gen_mysql mysqladmin -h localhost -u root -proot ping --silent &> /dev/null; do
+            if [ $timeout -le 0 ]; then
+              echo "Timeout reached. MySQL may not be ready."
+              exit 1
+            fi
+            timeout=$(($timeout - 1))
+            sleep 1
+          done
+          echo "MySQL is ready!"
+
+      - name: Initialize database
+        run: |
+          # Copy the SQL file to the container
+          docker cp gen-mybatis-example/src/main/resources/table.sql gen_mysql:/tmp/db.sql
+          # Execute the SQL file
+          docker exec gen_mysql mysql -u root -proot -e "SOURCE /tmp/db.sql;"
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
