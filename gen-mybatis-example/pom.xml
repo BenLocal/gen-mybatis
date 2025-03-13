@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.github.benshi</groupId>
+        <groupId>com.github.benshi.mybatis</groupId>
         <artifactId>gen-mybatis-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.github.benshi</groupId>
+    <groupId>com.github.benshi.mybatis</groupId>
     <artifactId>gen-mybatis-example</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -20,7 +20,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.benshi</groupId>
+            <groupId>com.github.benshi.mybatis</groupId>
             <artifactId>gen-mybatis</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
@@ -84,7 +84,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.github.benshi</groupId>
+                <groupId>com.github.benshi.mybatis</groupId>
                 <artifactId>gen-mybatis-maven-plugin</artifactId>
                 <version>1.0-SNAPSHOT</version>
                 <configuration>
@@ -92,16 +92,17 @@
                         <url>jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;allowPublicKeyRetrieval=true</url>
                         <username>root</username>
                         <password>root</password>
-                        <packageName>com.github.benshi.example.model</packageName>
+                        <packageName>com.github.benshi.mybatis.example.model</packageName>
                         <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
                         <includeTables>
-                            <includeTable>user</includeTable>
+                            <includeTable>user*</includeTable>
                         </includeTables>
                         <excludeTables>
-                            <excludeTable>flyway_schema_history</excludeTable>
+                            <excludeTable>flyway_*</excludeTable>
+                            <excludeTable>test*</excludeTable>
                         </excludeTables>
-                        <generateLombok>true</generateLombok>
-                        <generateOptional>true</generateOptional>
+                        <!-- <generateLombok>true</generateLombok> -->
+                        <!-- <generateOptional>true</generateOptional> -->
                         <!-- <generateJPA>true</generateJPA> -->
                         <!-- <generateSwagger>true</generateSwagger> -->
                     </config>

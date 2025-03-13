@@ -28,10 +28,11 @@ public class EntityGenerator {
     private final boolean generateJPA;
     private final boolean generateSwagger;
     private final boolean generateOptional;
+    private final boolean generateJackson;
     private final Set<String> importedTypes = new HashSet<>();
 
     public EntityGenerator(Log log, String outputDirectory, String packageName, boolean generateLombok,
-            boolean generateJPA, boolean generateSwagger, boolean generateOptional) {
+            boolean generateJPA, boolean generateSwagger, boolean generateOptional, boolean generateJackson) {
         this.log = log;
         this.outputDirectory = outputDirectory;
         this.packageName = packageName;
@@ -39,6 +40,7 @@ public class EntityGenerator {
         this.generateJPA = generateJPA;
         this.generateSwagger = generateSwagger;
         this.generateOptional = generateOptional;
+        this.generateJackson = generateJackson;
 
         // Initialize FreeMarker configuration
         freemarkerConfig = new Configuration(Configuration.VERSION_2_3_31);
@@ -80,6 +82,7 @@ public class EntityGenerator {
         dataModel.put("generateJPA", generateJPA);
         dataModel.put("generateSwagger", generateSwagger);
         dataModel.put("generateOptional", generateOptional);
+        dataModel.put("generateJackson", generateJackson);
 
         // Process columns and collect imports
         importedTypes.clear();

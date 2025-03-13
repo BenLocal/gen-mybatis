@@ -1,4 +1,4 @@
-package com.github.benshi;
+package com.github.benshi.mybatis;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -47,7 +47,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 
-@SupportedAnnotationTypes("com.github.benshi.AutoGenMapper")
+@SupportedAnnotationTypes("com.github.benshi.mybatis.AutoGenMapper")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class AutoGenMapperProcessor extends AbstractProcessor {
     private Elements elementUtils;

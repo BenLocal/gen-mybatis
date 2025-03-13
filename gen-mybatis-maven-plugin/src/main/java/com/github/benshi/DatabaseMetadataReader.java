@@ -74,14 +74,58 @@ public class DatabaseMetadataReader {
 
     private boolean shouldProcessTable(String tableName) {
         if (includeTables != null && !includeTables.isEmpty()) {
-            return includeTables.contains(tableName);
+            for (String pattern : includeTables) {
+                if (matchesWildcard(tableName, pattern)) {
+                    // Check exclusions before including
+                    if (excludeTables != null && !excludeTables.isEmpty()) {
+                        for (String excludePattern : excludeTables) {
+                            if (matchesWildcard(tableName, excludePattern)) {
+                                // Table matches an exclude pattern
+                                return false;
+                            }
+                        }
+                    }
+                    // Table matches an include pattern and not excluded
+                    return true;
+                }
+            }
+            // Table doesn't match any include pattern
+            return false;
         }
 
         if (excludeTables != null && !excludeTables.isEmpty()) {
-            return !excludeTables.contains(tableName);
+            for (String pattern : excludeTables) {
+                if (matchesWildcard(tableName, pattern)) {
+                    // Table matches an exclude pattern
+                    return false;
+                }
+            }
         }
 
         return true;
+    }
+
+    /**
+     * Checks if the table name matches a wildcard pattern.
+     * Supports * for any sequence of characters and ? for a single character.
+     * Matching is case insensitive.
+     * 
+     * @param tableName The table name to check
+     * @param pattern   The pattern to match against
+     * @return true if the table name matches the pattern
+     */
+    private boolean matchesWildcard(String tableName, String pattern) {
+        // Convert wildcard pattern to regex pattern
+        // Replace * with .* (any sequence of characters)
+        // Replace ? with . (any single character)
+        String regexPattern = pattern
+                .replace(".", "\\.") // Escape dots first to avoid conflicts
+                .replace("*", ".*")
+                .replace("?", ".");
+
+        // Match the table name against the regex pattern, case insensitive
+        // (?i) enables case-insensitive matching in regex
+        return tableName.matches("(?i)" + regexPattern);
     }
 
     private void readColumns(Connection connection, TableMetadata tableMetadata, String catalog) throws SQLException {

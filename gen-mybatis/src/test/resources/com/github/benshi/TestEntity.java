@@ -1,4 +1,4 @@
-package com.github.benshi;
+package com.github.benshi.mybatis;
 
 @AutoGenMapper(table = "user")
 public class TestEntity {

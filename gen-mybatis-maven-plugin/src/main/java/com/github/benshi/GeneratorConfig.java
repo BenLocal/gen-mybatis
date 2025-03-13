@@ -31,7 +31,7 @@ public class GeneratorConfig {
     private List<String> excludeTables = new ArrayList<>();
 
     @Parameter(defaultValue = "true")
-    private boolean generateLombok;
+    private boolean generateLombok = true;
 
     @Parameter(defaultValue = "false")
     private boolean generateJPA;
@@ -39,8 +39,15 @@ public class GeneratorConfig {
     @Parameter(defaultValue = "false")
     private boolean generateSwagger;
 
-    @Parameter(defaultValue = "false")
-    private boolean generateOptional;
+    @Parameter(defaultValue = "true")
+    private boolean generateOptional = true;
+
+    @Parameter(defaultValue = "true")
+    private boolean generateJackson = true;
+
+    public boolean isGenerateJackson() {
+        return generateJackson;
+    }
 
     public String getUrl() {
         return url;

@@ -1,4 +1,4 @@
-package com.github.benshi.controller;
+package com.github.benshi.mybatis.example.controller;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.github.benshi.example.model.User;
-import com.github.benshi.example.model.mapper.UserMapper;
+import com.github.benshi.mybatis.example.model.User;
+import com.github.benshi.mybatis.example.model.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
 

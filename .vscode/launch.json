@@ -6,9 +6,9 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Main",
+      "name": "example-main",
       "request": "launch",
-      "mainClass": "com.github.benshi.Main",
+      "mainClass": "com.github.benshi.mybatis.example.Main",
       "projectName": "gen-mybatis-example"
     },
     {

@@ -61,7 +61,8 @@ public class EntityGeneratorMojo extends AbstractMojo {
                     config.isGenerateLombok(),
                     config.isGenerateJPA(),
                     config.isGenerateSwagger(),
-                    config.isGenerateOptional());
+                    config.isGenerateOptional(),
+                    config.isGenerateJackson());
 
             entityGenerator.generateEntities(tables);
 

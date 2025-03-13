@@ -1,37 +1,42 @@
-package com.github.benshi.example.model;
+package com.github.benshi.mybatis.example.model;
 
 import lombok.Data;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.experimental.Accessors;
 import java.util.Optional;
-import com.github.benshi.AutoGenMapper;
-import com.github.benshi.AutoGenColumn;
+import com.github.benshi.mybatis.AutoGenMapper;
+import com.github.benshi.mybatis.AutoGenColumn;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
+@Builder
+@JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 @AutoGenMapper(table = "user")
 public class User {
 
     /**
      * 主键
      */
-    @AutoGenColumn(name = "id", type = "BIGINT" , nullable = false, pk = true)
+    @AutoGenColumn(name = "id", type = "BIGINT", nullable = false, pk = true)
     private Long id;
 
     /**
      * 名称
      */
-    @AutoGenColumn(name = "name", type = "VARCHAR" , nullable = false)
+    @AutoGenColumn(name = "name", type = "VARCHAR", nullable = false)
     private String name;
 
     /**
      * 年龄
      * 123
      */
-    @AutoGenColumn(name = "age", type = "INT" , nullable = false)
+    @AutoGenColumn(name = "age", type = "INT", nullable = false)
     private Integer age;
 
     public Optional<Long> getIdOptional() {

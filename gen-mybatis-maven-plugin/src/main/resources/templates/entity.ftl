@@ -10,6 +10,7 @@ import javax.persistence.*;
 </#if>
 <#if generateLombok>
 import lombok.Data;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.experimental.Accessors;
@@ -21,8 +22,12 @@ import io.swagger.annotations.ApiModelProperty;
 <#if generateOptional>
 import java.util.Optional;
 </#if>
-import com.github.benshi.AutoGenMapper;
-import com.github.benshi.AutoGenColumn;
+import com.github.benshi.mybatis.AutoGenMapper;
+import com.github.benshi.mybatis.AutoGenColumn;
+<#if generateJackson>
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+</#if>
 
 <#if tableComment?has_content>
 /**
@@ -35,6 +40,7 @@ import com.github.benshi.AutoGenColumn;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
+@Builder
 </#if>
 <#if generateJPA>
 @Entity
@@ -42,6 +48,9 @@ import com.github.benshi.AutoGenColumn;
 </#if>
 <#if generateSwagger && tableComment?has_content>
 @ApiModel(description = "${tableComment}")
+</#if>
+<#if generateJackson>
+@JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 </#if>
 @AutoGenMapper(table = "${tableName}")
 public class ${className} {
@@ -66,7 +75,7 @@ public class ${className} {
     <#if generateSwagger && column.columnComment?has_content>
     @ApiModelProperty(value = "${column.columnComment}")
     </#if>
-    @AutoGenColumn(name = "${column.columnName}", type = "${column.dataType}" <#if !column.isNullable>, nullable = false</#if><#if column.isPrimaryKey>, pk = true</#if>)
+    @AutoGenColumn(name = "${column.columnName}", type = "${column.dataType}"<#if !column.isNullable>, nullable = false</#if><#if column.isPrimaryKey>, pk = true</#if>)
     private ${column.javaTypeSimple} ${column.fieldName};
 
 </#list>
