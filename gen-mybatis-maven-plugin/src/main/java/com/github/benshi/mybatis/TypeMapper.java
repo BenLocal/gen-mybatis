@@ -1,4 +1,4 @@
-package com.github.benshi;
+package com.github.benshi.mybatis;
 
 import java.math.BigDecimal;
 import java.sql.Types;

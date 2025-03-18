@@ -1,4 +1,4 @@
-package com.github.benshi;
+package com.github.benshi.mybatis;
 
 public class ColumnMetadata {
     private String columnName;

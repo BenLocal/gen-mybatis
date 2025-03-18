@@ -1,4 +1,4 @@
-package com.github.benshi;
+package com.github.benshi.mybatis;
 
 import java.util.ArrayList;
 import java.util.List;
