@@ -94,9 +94,9 @@
                         <password>root</password>
                         <packageName>com.github.benshi.mybatis.example.model</packageName>
                         <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-                        <includeTables>
+                        <!-- <includeTables>
                             <includeTable>user*</includeTable>
-                        </includeTables>
+                        </includeTables> -->
                         <excludeTables>
                             <excludeTable>flyway_*</excludeTable>
                             <excludeTable>test*</excludeTable>

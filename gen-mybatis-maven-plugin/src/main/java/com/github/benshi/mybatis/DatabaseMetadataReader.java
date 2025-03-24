@@ -145,6 +145,10 @@ public class DatabaseMetadataReader {
             while (columnsResultSet.next()) {
                 String columnName = columnsResultSet.getString("COLUMN_NAME");
                 String fieldName = TypeMapper.convertSnakeCaseToCamelCase(columnName);
+                if (JavaKeywordsUtils.isJavaKeyword(fieldName) || JavaKeywordsUtils.startWithNumberKeyword(fieldName)) {
+                    fieldName = String.format("_%s", fieldName);
+                }
+
                 int dataType = columnsResultSet.getInt("DATA_TYPE");
                 String typeName = columnsResultSet.getString("TYPE_NAME");
                 String javaType = TypeMapper.getJavaType(dataType);
