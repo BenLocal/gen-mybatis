@@ -83,6 +83,7 @@ public class EntityGenerator {
         dataModel.put("generateSwagger", generateSwagger);
         dataModel.put("generateOptional", generateOptional);
         dataModel.put("generateJackson", generateJackson);
+        dataModel.put("now", new java.util.Date());
 
         // Process columns and collect imports
         importedTypes.clear();
