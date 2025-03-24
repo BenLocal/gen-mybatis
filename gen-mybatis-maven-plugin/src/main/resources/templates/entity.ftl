@@ -80,9 +80,9 @@ public class ${className} {
     @ApiModelProperty(value = "${column.columnComment}")
     </#if>
     @AutoGenColumn(name = "${column.columnName}", type = "${column.dataType}"<#if !column.isNullable>, nullable = false</#if><#if column.isPrimaryKey>, pk = true</#if>)
-    <#if !column.isNullable && generateLombok>
-    @lombok.NonNull
-    </#if>
+    <#--  <#if !column.isNullable && generateLombok>
+    @javax.annotation.NonNull
+    </#if>  -->
     private ${column.javaTypeSimple} ${column.fieldName};
 
 </#list>
